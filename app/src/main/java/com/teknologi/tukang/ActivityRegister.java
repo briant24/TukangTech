@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 public class ActivityRegister extends AppCompatActivity {
     TextInputLayout inputNama, inputEmail, inputPassword;
     String email, nama, password;
+    ProgressBar progressBar;
     private FirebaseAuth mAuth;
 
     @Override
@@ -34,7 +35,9 @@ public class ActivityRegister extends AppCompatActivity {
         inputNama = findViewById(R.id.txt_nama);
         inputEmail = findViewById(R.id.txt_email);
         inputPassword = findViewById(R.id.txt_password);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
         Button btnregister = (Button) findViewById(R.id.btn_register);
+
         btnregister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +74,7 @@ public class ActivityRegister extends AppCompatActivity {
     private void registrasi() {
         email = inputEmail.getEditText().getText().toString();
         password = inputPassword.getEditText().getText().toString();
-
+        progressBar.setVisibility(View.VISIBLE);
         mAuth.createUserWithEmailAndPassword(email,password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -85,13 +88,19 @@ public class ActivityRegister extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()){
                                         Toast.makeText(ActivityRegister.this, "Registrasi Berhasil, Silahkan Login", Toast.LENGTH_SHORT).show();
+                                        progressBar.setVisibility(View.VISIBLE);
                                         Intent intent = new Intent(ActivityRegister.this, ActivityLogin.class);
                                         startActivity(intent);
                                     }else {
                                         Toast.makeText(ActivityRegister.this, "Registrasi Gagal, Coba Lagi", Toast.LENGTH_SHORT).show();
+                                        progressBar.setVisibility(View.GONE);
                                     }
                                 }
                             });
+                        }
+                        else {
+                            Toast.makeText(ActivityRegister.this, "Registrasi Gagal, Coba Lagi", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
                         }
                     }
                 });
