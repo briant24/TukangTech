@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.teknologi.tukang">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/logo"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/logo"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+        <activity
+            android:name=".ActivityLogin"
+            android:exported="true" />
+        <activity
+            android:name=".InputData"
+            android:exported="true" />
+        <activity
+            android:name=".LoginAdmin"
+            android:exported="true" />
+        <activity
+            android:name=".ActivityReset"
+            android:exported="true" />
+        <activity
+            android:name=".InputBahanBaku"
+            android:exported="true" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".SewaTukang"
+            android:exported="true" />
+        <activity
+            android:name=".AlatBerat"
+            android:exported="true" />
+        <activity
+            android:name=".BahanBaku"
+            android:exported="true" />
+        <activity
+            android:name=".ActivityRegister"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ActivityReset">
+
+    <GridLayout
+        android:elevation="100dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnCount="1"
+        android:rowCount="1"
+        android:background="#90e0ef">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="270dp"
+            android:layout_marginTop="230dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            app:cardBackgroundColor="#00b4d8"
+            android:id="@+id/cardmaps"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="100dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/logodalam"
+                    android:layout_width="match_parent"
+                    android:layout_height="85dp"
+                    android:paddingTop="20dp"
+                    android:src="@drawable/logodalam" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txt_username"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusTopStart="10dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Email" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_reset"
+                        android:outlineSpotShadowColor="@color/black"
+                        android:layout_margin="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textStyle="bold"
+                        android:shadowRadius="20"
+                        android:text="RESET PASSWORD" />
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="310dp"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/btn_lupa"
+                        android:paddingLeft="6dp"
+                        android:layout_width="170dp"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:onClick="gologin"
+                        android:text="Sudah Punya Akun"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/btn_register"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:onClick="goregister"
+                        android:layout_toRightOf="@id/btn_lupa"
+                        android:text="Buat Akun Baru"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </GridLayout>
+
+</LinearLayout>
