@@ -1,14 +1,14 @@
 package com.teknologi.tukang;
 
 public class DataBahan {
-    public String nama,harga,desc,pcs,namafile;
+    public String nama,harga,desc,pcs,url;
 
-    public DataBahan(String nama,String pcs, String desc, String harga, String namafile){
+    public DataBahan(String nama,String pcs, String desc, String harga, String url){
         this.nama = nama;
         this.pcs = pcs;
         this.desc = desc;
         this.harga = harga;
-        this.namafile = namafile;
+        this.url = url;
     }
     public String getNama(){
         return nama;
@@ -22,5 +22,5 @@ public class DataBahan {
     public String getHarga(){
         return harga;
     }
-    public String getNamafile(){return namafile;}
+    public String getUrl(){return url;}
 }

@@ -4,6 +4,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -46,12 +47,11 @@ import java.util.UUID;
 public class InputBahanBaku extends AppCompatActivity {
     EditText inputNama, inputPcs, inputDesc, inputHarga;
     String nama, pcs, desc, harga;
-    StorageReference storageReference;
-    DatabaseReference databaseReference;
+    StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Data Bahan Baku");
     ImageView image;
+    Uri imageUri;
     ProgressBar progressBar;
-    int REQUEST_CODE_CAMERA = 0;
-    int REQUEST_CODE_GALLERY = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,113 +75,81 @@ public class InputBahanBaku extends AppCompatActivity {
         btnsave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadGambar();
+                if(imageUri != null){
+                    uploadGambar(imageUri);
+                }else {
+                    Toast.makeText(InputBahanBaku.this, "Data Kosong", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
 
-    private void uploadGambar(){
+    private void uploadGambar(Uri uri){
         nama = inputNama.getText().toString().trim();
         pcs = inputPcs.getText().toString().trim();
         desc = inputDesc.getText().toString().trim();
         harga = inputHarga.getText().toString().trim();
-        if(nama.isEmpty() || harga.isEmpty() || pcs.isEmpty()){
-            Toast.makeText(InputBahanBaku.this, "Nama/Pcs/Harga kosong", Toast.LENGTH_SHORT).show();
-        }else {
-            image.setDrawingCacheEnabled(true);
-            image.buildDrawingCache();
-            Bitmap bitmap = ((BitmapDrawable)image.getDrawable()).getBitmap();
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-            byte[] bytes = stream.toByteArray();
-            String namaFile = UUID.randomUUID() + ".jpg";
-            String pathImage = "gambar/" + namaFile;
-            UploadTask uploadTask = storageReference.child(pathImage).putBytes(bytes);
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    progressBar.setVisibility(View.GONE);
-                    Toast.makeText(InputBahanBaku.this, "Upload Berhasil!", Toast.LENGTH_SHORT).show();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    progressBar.setVisibility(View.GONE);
-                    Toast.makeText(InputBahanBaku.this, "Upload Gagal!", Toast.LENGTH_SHORT).show();
-                }
-            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    double progress = (100.0 *
-                            taskSnapshot.getBytesTransferred()) /
-                            taskSnapshot.getTotalByteCount();
-                    progressBar.setProgress((int) progress);
-                }
-            });
-            databaseReference = FirebaseDatabase.getInstance().getReference("BahanBaku");
-            simpan(nama,pcs,desc,harga,namaFile);
-        }
+
+        StorageReference fileRef = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(uri));
+        fileRef.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+
+                        DataBahan dataBahan = new DataBahan(nama, pcs, desc, harga, uri.toString());
+                        String modelId = databaseReference.push().getKey();
+                        databaseReference.child(modelId).setValue(dataBahan);
+                        Toast.makeText(InputBahanBaku.this, "Berhasil!!", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+                        bersih();
+                    }
+                });
+            }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                progressBar.setVisibility(View.VISIBLE);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(InputBahanBaku.this, "Gagal!!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private String getFileExtension(Uri mUri){
+        ContentResolver cr = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cr.getType(mUri));
     }
 
     private void pilihgambar() {
-        CharSequence[] menu = {"Kamera", "Galeri"};
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this)
-                .setTitle("Upload Gambar")
-                .setItems(menu, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                Intent imageIntentCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                startActivityForResult(imageIntentCamera, REQUEST_CODE_CAMERA);
-                                break;
-                            case 1:
-                                Intent imageIntentGalery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                startActivityForResult(imageIntentGalery, REQUEST_CODE_GALLERY);
-                                break;
-                        }
-                    }
-                });
-        dialog.create();
-        dialog.show();
+        Intent gallerryIntent = new Intent();
+        gallerryIntent.setAction(Intent.ACTION_GET_CONTENT);
+        gallerryIntent.setType("image/*");
+        startActivityForResult(gallerryIntent,2);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode,
-                                    Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case 0:
-                if (resultCode == RESULT_OK) {
-                    Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                    image.setImageBitmap(bitmap);
-                }
-                break;
-            case 1:
-                if (resultCode == RESULT_OK) {
-                    Uri uri = data.getData();
-                    image.setImageURI(uri);
-                }
-                break;
 
+        if (requestCode == 2 && resultCode == RESULT_OK && data != null){
+            imageUri = data.getData();
+            image.setImageURI(imageUri);
         }
     }
 
-    public void simpan(String nama, String pcs, String desc,
-                       String harga, String namaFile) {
-        String key = databaseReference.push().getKey();
-        DataBahan dataBahan = new DataBahan(nama, pcs, desc, harga, namaFile);
-        databaseReference.child(key).setValue(dataBahan);
-        bersih();
-    }
     private void bersih(){
         inputNama.setText("");
         inputPcs.setText("");
         inputDesc.setText("");
         inputHarga.setText("");
-        image.setVisibility(View.GONE);
+        image.setImageURI(null);
     }
 
 }
