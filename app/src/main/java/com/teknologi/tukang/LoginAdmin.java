@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -50,7 +49,7 @@ public class LoginAdmin extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         if (username.equals("admin") && password.equals("admin")){
             Toast.makeText(LoginAdmin.this, "Login Berhasil!", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(LoginAdmin.this, InputData.class);
+            Intent intent = new Intent(LoginAdmin.this, MenuInputData.class);
             startActivity(intent);
         }
         else {

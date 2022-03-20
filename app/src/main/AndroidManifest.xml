@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.teknologi.tukang">
+    package="com.teknologi.tukang" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -11,15 +11,15 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+        android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" >
         <activity
-            android:name=".CobaAja"
+            android:name=".ActivityLogin"
             android:exported="false" />
         <activity
             android:name=".ActivityRegister"
             android:exported="true" />
         <activity
-            android:name=".InputData"
+            android:name=".MenuInputData"
             android:exported="true" />
         <activity
             android:name=".LoginAdmin"
@@ -43,7 +43,7 @@
             android:name=".BahanBaku"
             android:exported="true" />
         <activity
-            android:name=".ActivityLogin"
+            android:name=".InputAlatBerat"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

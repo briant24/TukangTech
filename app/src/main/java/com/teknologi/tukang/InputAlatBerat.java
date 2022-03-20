@@ -25,11 +25,11 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-public class InputBahanBaku extends AppCompatActivity {
+public class InputAlatBerat extends AppCompatActivity {
     EditText inputNama, inputPcs, inputDesc, inputHarga;
     String nama, pcs, desc, harga;
     StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-    DatabaseReference dbBahanBaku = FirebaseDatabase.getInstance().getReference().child("Data Bahan Baku");
+    DatabaseReference dbAlatBerat = FirebaseDatabase.getInstance().getReference().child("Data Alat Berat");
     ImageView image;
     Uri imageUri;
     ProgressBar progressBar;
@@ -37,7 +37,7 @@ public class InputBahanBaku extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_input_bahan_baku);
+        setContentView(R.layout.activity_input_alat_berat);
         inputNama = findViewById(R.id.txt_nama);
         inputPcs = findViewById(R.id.txt_pcs);
         inputDesc = findViewById(R.id.txt_desc);
@@ -59,7 +59,7 @@ public class InputBahanBaku extends AppCompatActivity {
                 if(imageUri != null){
                     uploadGambar(imageUri);
                 }else {
-                    Toast.makeText(InputBahanBaku.this, "Data Kosong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(InputAlatBerat.this, "Data Kosong", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -80,9 +80,9 @@ public class InputBahanBaku extends AppCompatActivity {
                     public void onSuccess(Uri uri) {
 
                         HandlerUpload handlerUpload = new HandlerUpload(nama, pcs, desc, harga, uri.toString());
-                        String modelId = dbBahanBaku.push().getKey();
-                        dbBahanBaku.child(modelId).setValue(handlerUpload);
-                        Toast.makeText(InputBahanBaku.this, "Berhasil!!", Toast.LENGTH_SHORT).show();
+                        String modelId = dbAlatBerat.push().getKey();
+                        dbAlatBerat.child(modelId).setValue(handlerUpload);
+                        Toast.makeText(InputAlatBerat.this, "Berhasil!!", Toast.LENGTH_SHORT).show();
                         progressBar.setVisibility(View.GONE);
                         bersih();
                     }
@@ -97,7 +97,7 @@ public class InputBahanBaku extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(InputBahanBaku.this, "Gagal!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(InputAlatBerat.this, "Gagal!!", Toast.LENGTH_SHORT).show();
             }
         });
     }

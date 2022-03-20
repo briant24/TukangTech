@@ -1,9 +1,9 @@
 package com.teknologi.tukang;
 
-public class DataBahan {
+public class HandlerUpload {
     public String nama,harga,desc,pcs,url;
 
-    public DataBahan(String nama,String pcs, String desc, String harga, String url){
+    public HandlerUpload(String nama, String pcs, String desc, String harga, String url){
         this.nama = nama;
         this.pcs = pcs;
         this.desc = desc;

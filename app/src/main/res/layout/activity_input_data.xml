@@ -5,89 +5,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#90e0ef"
-    tools:context=".InputData">
+    tools:context=".MenuInputData">
 
     <TextView
         android:id="@+id/txt"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textAlignment="center"
+        android:layout_marginTop="80dp"
         android:text="Silahkan Pilih Inputan"
-        android:textSize="40dp"
-        android:textStyle="italic"/>
+        android:textSize="30dp"
+        android:textStyle="bold"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/fab_add"
-        android:layout_marginEnd="26dp"
-        android:layout_marginBottom="26dp"
-        android:src="@drawable/ic_add"
-        app:fabCustomSize="65dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+    <Button
+        app:layout_constraintTop_toBottomOf="@id/txt"
+        android:layout_marginTop="170dp"
+        android:id="@+id/btnBahan"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Bahan Baku" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/addbahan"
-        android:layout_marginBottom="24dp"
-        app:fabSize="normal"
-        app:layout_constraintBottom_toTopOf="@id/fab_add"
-        app:layout_constraintEnd_toEndOf="@id/fab_add"
-        app:layout_constraintStart_toStartOf="@id/fab_add"
-        android:src="@drawable/bahanbaku"/>
+    <Button
+        android:layout_margin="20dp"
+        android:id="@+id/btnAlat"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnBahan"
+        android:text="Alat Berat" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/add_bahan_action_text"
-        android:layout_marginEnd="8dp"
-        android:text="Tambah Bahan Baku"
-        app:layout_constraintBottom_toBottomOf="@id/addbahan"
-        app:layout_constraintEnd_toStartOf="@id/addbahan"
-        app:layout_constraintTop_toTopOf="@id/addbahan"/>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/addalat"
-        android:layout_marginBottom="24dp"
-        app:fabSize="normal"
-        app:layout_constraintBottom_toTopOf="@id/addbahan"
-        app:layout_constraintEnd_toEndOf="@id/addbahan"
-        app:layout_constraintStart_toStartOf="@id/addbahan"
-        android:src="@drawable/bego"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/add_alat_action_text"
-        android:layout_marginEnd="8dp"
-        android:text="Tambah Alat Berat"
-        app:layout_constraintBottom_toBottomOf="@id/addalat"
-        app:layout_constraintEnd_toStartOf="@id/addalat"
-        app:layout_constraintTop_toTopOf="@id/addalat"/>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/addtukang"
-        android:layout_marginBottom="24dp"
-        app:fabSize="normal"
-        app:layout_constraintBottom_toTopOf="@id/addalat"
-        app:layout_constraintEnd_toEndOf="@id/addalat"
-        app:layout_constraintStart_toStartOf="@id/addalat"
-        android:src="@drawable/tukang"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/add_tukang_action_text"
-        android:layout_marginEnd="8dp"
-        android:text="Tambah Tukang"
-        app:layout_constraintBottom_toBottomOf="@id/addtukang"
-        app:layout_constraintEnd_toStartOf="@id/addtukang"
-        app:layout_constraintTop_toTopOf="@id/addtukang"/>
+    <Button
+        android:layout_margin="20dp"
+        android:id="@+id/btnTukang"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnAlat"
+        android:text="Tukang" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
