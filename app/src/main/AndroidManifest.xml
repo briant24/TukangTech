@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" >
         <activity
-            android:name=".ActivityLogin"
+            android:name=".InputAlatBerat"
             android:exported="false" />
         <activity
             android:name=".ActivityRegister"
@@ -43,7 +43,7 @@
             android:name=".BahanBaku"
             android:exported="true" />
         <activity
-            android:name=".InputAlatBerat"
+            android:name=".ActivityLogin"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
