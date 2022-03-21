@@ -5,13 +5,13 @@
     android:background="#90e0ef"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".InputBahanBaku">
+    tools:context=".InputTenagaTukang">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tambah Data Bahan Baku"
+        android:text="Tambah Data Tukang"
         android:textColor="@color/black"
         android:layout_marginTop="16dp"
         android:textSize="26dp"

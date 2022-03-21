@@ -56,10 +56,26 @@ public class InputBahanBaku extends AppCompatActivity {
         btnsave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(imageUri != null){
+                nama = inputNama.getText().toString().trim();
+                pcs = inputPcs.getText().toString().trim();
+                desc = inputDesc.getText().toString().trim();
+                harga = inputHarga.getText().toString().trim();
+                if(nama.isEmpty()){
+                    inputNama.setError("Data belum dimasukkan");
+                    inputNama.requestFocus();
+                }else if (pcs.isEmpty()) {
+                    inputPcs.setError("Data belum dimasukkan");
+                    inputPcs.requestFocus();
+                }else if (desc.isEmpty()){
+                    inputDesc.setError("Data belum dimasukkan");
+                    inputDesc.requestFocus();
+                }else if (harga.isEmpty()){
+                    inputHarga.setError("Data belum dimasukkan");
+                    inputHarga.requestFocus();
+                }else if (imageUri == null){
+                    Toast.makeText(InputBahanBaku.this, "Gambar kosong", Toast.LENGTH_SHORT).show();
+                }else{
                     uploadGambar(imageUri);
-                }else {
-                    Toast.makeText(InputBahanBaku.this, "Data Kosong", Toast.LENGTH_SHORT).show();
                 }
             }
         });

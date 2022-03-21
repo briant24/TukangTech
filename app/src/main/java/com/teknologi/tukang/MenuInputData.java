@@ -22,20 +22,22 @@ public class MenuInputData extends AppCompatActivity {
         bahan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MenuInputData.this, InputBahanBaku.class);
-                startActivity(intent);
+                Intent bahanbaku = new Intent(MenuInputData.this, InputBahanBaku.class);
+                startActivity(bahanbaku);
             }
         });
         alat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent alatbrt = new Intent(MenuInputData.this, InputAlatBerat.class);
+                startActivity(alatbrt);
             }
         });
         tukang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent tukangg = new Intent(MenuInputData.this, InputTenagaTukang.class);
+                startActivity(tukangg);
             }
         });
     }
