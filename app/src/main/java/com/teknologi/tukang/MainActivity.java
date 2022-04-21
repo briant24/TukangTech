@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void godata(View view) {
-        Intent intent = new Intent(MainActivity.this, LoginAdmin.class);
+        Intent intent = new Intent(MainActivity.this, ActivityLogin.class);
         startActivity(intent);
     }
 }

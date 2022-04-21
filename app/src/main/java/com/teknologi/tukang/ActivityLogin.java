@@ -19,6 +19,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class ActivityLogin extends AppCompatActivity {
     TextInputLayout inputEmail, inputPassword;
@@ -71,10 +76,9 @@ public class ActivityLogin extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            checkUserAccessLevel();
                             Toast.makeText(ActivityLogin.this, "Login Sukses", Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.VISIBLE);
-                            Intent intent = new Intent(ActivityLogin.this, MainActivity.class);
-                            startActivity(intent);
                         } else {
                             progressBar.setVisibility(View.GONE);
                             Toast.makeText(ActivityLogin.this, "Login Gagal", Toast.LENGTH_SHORT).show();
@@ -97,5 +101,29 @@ public class ActivityLogin extends AppCompatActivity {
     public void onBackPressed(){
         finish();
         System.exit(0);
+    }
+
+    private void checkUserAccessLevel(){
+        DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference();
+        firebaseDatabase.child("Users/isAdmin");
+        firebaseDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String data = snapshot.getValue().toString();
+                Toast.makeText(ActivityLogin.this, data, Toast.LENGTH_SHORT).show();
+                if (data == "true"){
+                    Intent admin = new Intent(ActivityLogin.this, MenuInputData.class);
+                    startActivity(admin);
+                }else{
+                    Intent user = new Intent(ActivityLogin.this, MainActivity.class);
+                    startActivity(user);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

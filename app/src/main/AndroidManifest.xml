@@ -25,9 +25,6 @@
             android:name=".MenuInputData"
             android:exported="true" />
         <activity
-            android:name=".LoginAdmin"
-            android:exported="true" />
-        <activity
             android:name=".ActivityReset"
             android:exported="true" />
         <activity
