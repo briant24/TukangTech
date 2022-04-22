@@ -26,28 +26,27 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class ActivityLogin extends AppCompatActivity {
-    TextInputLayout inputEmail, inputPassword;
-    String email,password;
-    ProgressBar progressBar;
-    private FirebaseAuth mAuth;
+    private TextInputLayout inputUsername, inputPassword;
+    private String username,password;
+    private ProgressBar progressBar;
+    private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        inputEmail = findViewById(R.id.txt_username);
+        inputUsername = findViewById(R.id.txt_username);
         inputPassword = findViewById(R.id.txt_password);
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
-        mAuth = FirebaseAuth.getInstance();
         Button btnlogin = (Button) findViewById(R.id.btn_login);
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                email = inputEmail.getEditText().getText().toString();
+                username = inputUsername.getEditText().getText().toString();
                 password = inputPassword.getEditText().getText().toString();
-                if (email.isEmpty()){
-                    Toast.makeText(ActivityLogin.this, "Email perlu diinputkan!", Toast.LENGTH_SHORT).show();
-                    inputEmail.requestFocus();
+                if (username.isEmpty()){
+                    Toast.makeText(ActivityLogin.this, "Username perlu diinputkan!", Toast.LENGTH_SHORT).show();
+                    inputUsername.requestFocus();
                     return;
                 }
                 if (password.isEmpty()){
@@ -68,21 +67,39 @@ public class ActivityLogin extends AppCompatActivity {
     }
 
     private void ceklogin() {
-        email = inputEmail.getEditText().getText().toString();
+        username = inputUsername.getEditText().getText().toString();
         password = inputPassword.getEditText().getText().toString();
         progressBar.setVisibility(View.VISIBLE);
-        mAuth.signInWithEmailAndPassword(email,password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        databaseReference.child("Users")
+                .orderByChild("username")
+                .equalTo(username)
+                .addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            checkUserAccessLevel();
-                            Toast.makeText(ActivityLogin.this, "Login Sukses", Toast.LENGTH_SHORT).show();
-                            progressBar.setVisibility(View.VISIBLE);
-                        } else {
-                            progressBar.setVisibility(View.GONE);
-                            Toast.makeText(ActivityLogin.this, "Login Gagal", Toast.LENGTH_SHORT).show();
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot data : snapshot.getChildren()) {
+                            String pass = data.child("password").getValue().toString();
+                            if(pass.equals(password)){
+                                String level = data.child("usrLvl").getValue().toString();
+                                if(level.equals("1")) {
+                                    String nama = data.child("nama").getValue().toString();
+                                    Intent adminMenu = new Intent(ActivityLogin.this, MenuInputData.class);
+                                    adminMenu.putExtra("nama", nama);
+                                    startActivity(adminMenu);
+                                }else {
+                                    Intent userMenu = new Intent(ActivityLogin.this, MainActivity.class);
+                                    startActivity(userMenu);
+                                }
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Username dan Atau Password Yang Anda Masukan Salah", Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.GONE);
+                            }
                         }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(getApplicationContext(), "Database Error", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
                     }
                 });
     }
@@ -100,30 +117,5 @@ public class ActivityLogin extends AppCompatActivity {
     @Override
     public void onBackPressed(){
         finish();
-        System.exit(0);
-    }
-
-    private void checkUserAccessLevel(){
-        DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference();
-        firebaseDatabase.child("Users/isAdmin");
-        firebaseDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String data = snapshot.getValue().toString();
-                Toast.makeText(ActivityLogin.this, data, Toast.LENGTH_SHORT).show();
-                if (data == "true"){
-                    Intent admin = new Intent(ActivityLogin.this, MenuInputData.class);
-                    startActivity(admin);
-                }else{
-                    Intent user = new Intent(ActivityLogin.this, MainActivity.class);
-                    startActivity(user);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
 }

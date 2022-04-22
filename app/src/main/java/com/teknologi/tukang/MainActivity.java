@@ -12,7 +12,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
-    private FirebaseAuth mAuth;
     private TextView mTvemail;
 
     @Override
@@ -20,21 +19,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mTvemail = findViewById(R.id.tv_email);
-        mAuth = FirebaseAuth.getInstance();
     }
 
-    @Override
-    protected void onStart(){
-        super.onStart();
-
-        FirebaseUser mFirebaseUser = mAuth.getCurrentUser();
-        if (mFirebaseUser!=null){
-            mTvemail.setText(mFirebaseUser.getEmail());
-        }else {
-            Intent intent = new Intent(MainActivity.this, ActivityLogin.class);
-            startActivity(intent);
-        }
-    }
 
     public void goalatberat(View view) {
         Intent intent = new Intent(MainActivity.this, AlatBerat.class);
